@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BankAcountAllTest
@@ -61,6 +63,20 @@ namespace BankAcountAllTest
 		}
 
 		[TestMethod]
+		public void print_deposeit_history_operation()
+		{
+			var accountService = new AccountServiceImpl();
+			accountService.deposit(1000);
+			accountService.deposit(111);
+			var print = accountService.printStatement();
+			Assert.AreEqual(
+				"Date      | AMOUNT  | BALANCE" + "\r\n" +
+				"01/04/2014| 111.00 | 1111.00"+ "\r\n" +
+				"01/04/2014| 1000.00 | 1000.00",
+				print);
+		}
+
+		[TestMethod]
 		public void print_withdraw_operation()
 		{
 			var accountService = new AccountServiceImpl();
@@ -76,21 +92,37 @@ namespace BankAcountAllTest
 	public class AccountServiceImpl
 	{
 		private int account;
+		private List<int> historyAccountOperation;
+
+		public AccountServiceImpl()
+		{
+			this.account = 0;
+			this.historyAccountOperation = new List<int>();
+		}
 
 		public void deposit(int i)
 		{
 			account += i;
+			historyAccountOperation.Add(i);
 		}
 
 		public string printStatement()
 		{
-			return string.Format("Date      | AMOUNT  | BALANCE" + "\r\n" +
-			       "01/04/2014| {0}.00 | {0}.00", account);
+			
+			int cumulator = 0;
+			return "Date      | AMOUNT  | BALANCE" + "\r\n"
+			 + String.Join( "\r\n", 
+				historyAccountOperation.Select(a =>
+				{
+					cumulator += a;
+					return string.Format("01/04/2014| {0}.00 | {1}.00", a, cumulator);				
+				}).Reverse());
 		}
 
 		public void withdraw(int i)
 		{
 			account -= i;
+			historyAccountOperation.Add(-i);
 		}
 	}
 
