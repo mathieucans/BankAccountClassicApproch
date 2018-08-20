@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Web.Services" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -50,6 +51,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AccountService.cs" />
+    <Compile Include="AccountServiceImpl.cs" />
+    <Compile Include="AccountServiceShould.cs" />
+    <Compile Include="BankAcountAcceptanceTest.cs" />
+    <Compile Include="IPrinter.cs" />
+    <Compile Include="Operation.cs" />
+    <Compile Include="TestDateProvider.cs" />
+    <Compile Include="Printer.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
